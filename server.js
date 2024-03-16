@@ -43,8 +43,10 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => {
     console.log("Oh, socket " + socket.id + " has left");
     const userIndex = users.findIndex((user) => user.id == socket.id);
-    socket.broadcast.emit("userLeft", users[userIndex].name);
-    users.splice(userIndex, 1);
+    if (userIndex !== -1) {
+      socket.broadcast.emit("userLeft", users[userIndex].name);
+      users.splice(userIndex, 1);
+    }
   });
 
   //console.log("I've added a listener on message and disconnect events \n");
